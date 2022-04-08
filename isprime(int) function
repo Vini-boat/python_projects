@@ -1,0 +1,13 @@
+def isprime(int):
+    divisor = 1
+    qtd_div = 0
+    while divisor <= int:
+        if int % divisor == 0:
+            qtd_div += 1
+        divisor += 1
+        if qtd_div > 2:
+            break
+    if qtd_div > 2:
+        return False
+    else:
+        return True
