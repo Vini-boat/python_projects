@@ -1,7 +1,7 @@
 def isprime(int):
     divisor = 1
     qtd_div = 0
-    while divisor <= int:
+    while divisor <= int//2:
         if int % divisor == 0:
             qtd_div += 1
         divisor += 1
