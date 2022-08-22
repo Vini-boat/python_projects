@@ -1,20 +1,21 @@
 class Calculadora():
     def __init__(self) -> None:
-        self.operadores = {
-            '*': self.multiplicar,
-            '/': self.dividir,
-            '+': self.somar,
-            '-': self.subtrair,
-        }
         
-        self.oper1 = {
-            '*': self.multiplicar,
-            '/': self.dividir,
+        self.ordem_operadores = {
+            0: {
+                '*': self.multiplicar,
+                '/': self.dividir
+                },
+            1: {
+                '+': self.somar,
+                '-': self.subtrair
+            }
         }
-        self.oper2 = {
-            '+': self.somar,
-            '-': self.subtrair,
-        }
+
+        self.operadores = {}
+        for d in self.ordem_operadores.values():
+            self.operadores.update(d)
+
 
 
     def somar(self, num1, num2) -> int:
@@ -47,27 +48,18 @@ class Calculadora():
     def resolver(self, expressaoSeparada) -> float:
         conta = expressaoSeparada.copy()
         while len(conta) > 1:
-            if "*" in conta or "/" in conta:
-                for index, elemento in enumerate(conta):
-                    if elemento in self.oper1.keys():
-                        tmp = []
+            for d in self.ordem_operadores:
+                k = list(self.ordem_operadores[d].keys())
+                while k[0] in conta or k[1] in conta:
+                    for index, elemento in enumerate(conta):
+                        if elemento in k:
+                            tmp = []
 
-                        tmp.append(conta.pop(index -1))
-                        tmp.append(conta.pop(index -1))
-                        tmp.append(conta.pop(index -1))
-                
-                        conta.insert(index-1, self.operar(*tmp))
-
-            if "+" in conta or "-" in conta:
-                for index, elemento in enumerate(conta):
-                    if elemento in self.oper2.keys():
-                        tmp = []
-
-                        tmp.append(conta.pop(index -1))
-                        tmp.append(conta.pop(index -1))
-                        tmp.append(conta.pop(index -1))
-                        
-                        conta.insert(index-1, self.operar(*tmp))
+                            tmp.append(conta.pop(index -1))
+                            tmp.append(conta.pop(index -1))
+                            tmp.append(conta.pop(index -1))
+                    
+                            conta.insert(index-1, self.operar(*tmp))
             
         return conta.pop()
     
@@ -75,15 +67,11 @@ class Calculadora():
         return self.resolver(self.separar(expressao))
 
 
-
-
-
-
 if __name__ == "__main__":
 
     calc = Calculadora()
 
-    expressao = input("Expressao: ")
+    expressao = input('Espressão: ')
 
     print(calc.calcular(expressao))
     
